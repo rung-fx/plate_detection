@@ -1,0 +1,40 @@
+name: plate_detection
+description: "A new Flutter project."
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.6.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  get: ^4.7.2
+  image_picker: ^1.1.2
+  dio: ^5.8.0+1
+  connectivity_plus: ^6.1.4
+  google_fonts: ^6.2.1
+  freewill_fx_widgets: ^1.4.11
+  uuid: ^4.5.1
+  tflite_flutter: ^0.11.0
+  image: ^4.5.4
+  image_cropper: ^8.1.0
+  flutter_tesseract_ocr: ^0.4.29
+  intl: ^0.20.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/plate_model/
+    - assets/plate_no_model/
+    - assets/tessdata/
+    - assets/tessdata_config.json
