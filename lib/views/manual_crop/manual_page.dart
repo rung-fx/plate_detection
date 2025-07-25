@@ -63,9 +63,7 @@ class _ManualPageState extends State<ManualPage> {
 
                     setState(() {});
                   },
-                  child: Text(
-                    'manual crop',
-                  ),
+                  child: Text('manual crop'),
                 ),
                 const SizedBox(height: 16.0),
                 originalFile != null ? Image.file(originalFile!) : SizedBox(),
@@ -90,7 +88,9 @@ class _ManualPageState extends State<ManualPage> {
                 ),
                 controller.plateNoTemp.isNotEmpty
                     ? Wrap(
-                        children: controller.plateNoTemp.map((e) => Image.file(File(e))).toList(),
+                        children: controller.plateNoTemp
+                            .map((e) => Image.file(File(e)))
+                            .toList(),
                       )
                     : SizedBox(),
                 const SizedBox(height: 16.0),

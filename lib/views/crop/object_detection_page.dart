@@ -22,7 +22,7 @@ class PlateDetectionPage extends StatelessWidget {
       body: SafeArea(
         child: GetBuilder<PlateDetectionController>(
           builder: (c) {
-            if (c.isLoading) {
+            if (c.isLoading.value) {
               return const Center(child: CircularProgressIndicator());
             }
 

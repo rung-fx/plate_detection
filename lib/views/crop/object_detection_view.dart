@@ -61,7 +61,7 @@ class ObjectDetectionView extends StatelessWidget {
             Container(
               width: availableWidth,
               height: availableHeight,
-              color: Colors.black12,
+              color: Colors.transparent,
             ),
 
             // Image layer

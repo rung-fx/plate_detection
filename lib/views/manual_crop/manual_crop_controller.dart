@@ -64,6 +64,67 @@ class ManualCropController extends GetxController {
     }
   }
 
+  Future<void> onlyDetect(File? imageCrop) async {
+    if (imageCrop == null) return;
+
+    try {
+      isLoading.value = true;
+      final imageData = await imageCrop.readAsBytes();
+      final image = img.decodeImage(imageData);
+      if (image == null) {
+        log('Failed to decode image');
+        return;
+      }
+
+      imageHeight.value = image.height;
+      imageWidth.value = image.width;
+
+      final resizedImage = img.copyResize(
+        image,
+        width: inputSize,
+        height: inputSize,
+        interpolation: img.Interpolation.cubic,
+      );
+
+      final inputShape = _interpreter.getInputTensor(0).shape;
+      List<List<List<List<double>>>> inputData;
+      if (inputShape.length == 4 && inputShape[1] == 3) {
+        inputData = _prepareInputNCHW(resizedImage);
+      } else {
+        inputData = _prepareInputNHWC(resizedImage);
+      }
+
+      final outputShape = _interpreter.getOutputTensor(0).shape;
+      var outputData = _prepareOutputContainer(outputShape);
+
+      log('Running inference...');
+      _interpreter.run(inputData, outputData);
+
+      var results = _processOutputs(
+        outputData,
+        outputShape,
+        imageWidth.value,
+        imageHeight.value,
+      );
+
+      results = await _fixUnknownLabelsWithOCR(results, image);
+
+      recognitions.assignAll(results);
+
+      final lines = extractLinesFromDetections(results);
+
+      plateNo.value = lines.isNotEmpty ? lines[0] : "";
+      province.value = lines.length > 1 ? lines[1] : "";
+
+      log("plateNo: ${plateNo.value}");
+      log("province: ${province.value}");
+      isLoading.value = false;
+    } catch (e) {
+      log('Error running object detection: $e');
+      isLoading.value = false;
+    }
+  }
+
   Future<void> _runObjectDetection() async {
     if (imageFile.value == null) return;
 

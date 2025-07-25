@@ -9,7 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 
 class PlateDetectionController extends GetxController {
-  bool isLoading = false;
+  var isLoading = false.obs;
   bool isModelLoaded = false;
 
   late Interpreter interpreter;
@@ -51,14 +51,14 @@ class PlateDetectionController extends GetxController {
       return;
     }
 
-    isLoading = true;
+    isLoading.value = true;
     bestPlate = null;
     update();
 
     selectedImage = File(picked.path);
     await _detectPlate();
 
-    isLoading = false;
+    isLoading.value = false;
     update();
   }
 
